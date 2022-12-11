@@ -7,6 +7,7 @@ edition = "2021"
 
 [dependencies]
 lazy_static = "1.4.0"
+num-bigint = "0.4.3"
 
 [[bin]]
 edition = "2021"
