@@ -29,7 +29,7 @@ fn test_first() {
     let output = execute_first(&INPUT_SAMPLE);
 
     // then
-    assert_eq!(output, 0);
+    assert_ne!(output, -1);
 }
 
 #[test]
@@ -38,5 +38,5 @@ fn test_second() {
     let output = execute_second(&INPUT_SAMPLE);
 
     // then
-    assert_eq!(output, 0);
+    assert_ne!(output, -1);
 }
