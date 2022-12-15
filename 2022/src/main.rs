@@ -15,6 +15,7 @@ mod day11;
 mod day12;
 mod day13;
 mod day14;
+mod day15;
 
 use day00::day_00_first;
 use day00::day_00_second;
@@ -46,6 +47,8 @@ use day13::day_13_first;
 use day13::day_13_second;
 use day14::day_14_first;
 use day14::day_14_second;
+use day15::day_15_first;
+use day15::day_15_second;
 use std::env;
 
 pub fn main() {
@@ -93,6 +96,8 @@ pub fn main() {
         "13-2" => day_13_second(),
         "14-1" => day_14_first(),
         "14-2" => day_14_second(),
+        "15-1" => day_15_first(),
+        "15-2" => day_15_second(),
         _ => println!("No process for command: {}", args[0]),
     }
 }
