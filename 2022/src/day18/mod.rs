@@ -17,34 +17,14 @@ pub fn day_18_second() {
     println!("Day 18-2: {}", output);
 }
 
-fn execute_first(input: &str) -> i32 {
+fn execute_first(input: &str) -> usize {
     let coordinates = parse_coordinates(input);
+    let max_boundaries = Boundaries::max_boundaries();
 
-    let mut surface_area = 0;
-    for coord in &coordinates {
-        let mut sides = 6;
-        if coordinates.contains(&(coord.0 + 1, coord.1, coord.2)) {
-            sides -= 1;
-        }
-        if coordinates.contains(&(coord.0 - 1, coord.1, coord.2)) {
-            sides -= 1;
-        }
-        if coordinates.contains(&(coord.0, coord.1 + 1, coord.2)) {
-            sides -= 1;
-        }
-        if coordinates.contains(&(coord.0, coord.1 - 1, coord.2)) {
-            sides -= 1;
-        }
-        if coordinates.contains(&(coord.0, coord.1, coord.2 + 1)) {
-            sides -= 1;
-        }
-        if coordinates.contains(&(coord.0, coord.1, coord.2 - 1)) {
-            sides -= 1;
-        }
-        surface_area += sides;
-    }
-
-    return surface_area;
+    return coordinates.iter().map(|coords| neighbours(coords, &max_boundaries).iter()
+        .filter(|n| !coordinates.contains(n))
+        .count()
+    ).sum();
 }
 
 fn execute_second(input: &str) -> i32 {
@@ -80,7 +60,7 @@ fn execute_second(input: &str) -> i32 {
     loop {
         match check.pop_front() {
             Some(checking) => {
-                for mut neighbour in neighbours(&checking, &boundries) {
+                for neighbour in neighbours(&checking, &boundries) {
                     if coordinates.contains(&neighbour) {
                         lava_neighbors += 1;
                         continue;
@@ -155,6 +135,17 @@ impl Boundaries {
             max_y: i32::MIN,
             min_z: i32::MAX,
             max_z: i32::MIN,
+        }
+    }
+
+    fn max_boundaries() -> Boundaries {
+        Boundaries {
+            min_x: i32::MIN,
+            max_x: i32::MAX,
+            min_y: i32::MIN,
+            max_y: i32::MAX,
+            min_z: i32::MIN,
+            max_z: i32::MAX,
         }
     }
 
