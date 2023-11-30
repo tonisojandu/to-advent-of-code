@@ -39,12 +39,16 @@ fn calculate_first(dir: &Dir) -> u64 {
 fn execute_second(input: &str) -> u64 {
     let root_dir = build_dir_structure(input);
 
-    let space_needed = root_dir.size - 40000000;
+    let mut space_needed = root_dir.size - 40000000;
 
-    return calculate_second(&root_dir, space_needed);
+    let result = calculate_second(&root_dir, space_needed);
+
+    space_needed = 0;
+
+    return space_needed;
 }
 
-fn calculate_second(dir: &Dir, space_needed: u64) -> u64 {
+fn calculate_second(dir: &Dir, space_needed: u64) -> u64  {
     let mut result = u64::MAX;
 
     if dir.size >= space_needed && dir.size < result {
