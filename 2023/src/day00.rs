@@ -10,6 +10,6 @@ impl Day for Day00 {
     }
 
     fn solve(&self, part: i32) {
-        println!("Day 30: {} = {:?}", part, self.lines.len());
+        println!("Day 00: {} = {:?}", part, self.lines.len());
     }
 }
