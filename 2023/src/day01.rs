@@ -29,14 +29,14 @@ impl Day for Day01 {
                 }
             })
             .map(
-            |line| {
-                let only_digits = line.chars()
-                    .filter(|c| c.is_digit(10))
-                    .collect::<Vec<char>>();
-                only_digits[0].to_digit(10).unwrap() * 10
-                    + only_digits[only_digits.len() - 1].to_digit(10).unwrap()
-            }
-        ).sum();
+                |line| {
+                    let only_digits = line.chars()
+                        .filter(|c| c.is_digit(10))
+                        .collect::<Vec<char>>();
+                    only_digits[0].to_digit(10).unwrap() * 10
+                        + only_digits[only_digits.len() - 1].to_digit(10).unwrap()
+                }
+            ).sum();
         println!("Day 01: {} = {:?}", part, sum);
     }
 }
