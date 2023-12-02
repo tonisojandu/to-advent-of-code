@@ -23,16 +23,16 @@ pub fn solve(lines: Vec<String>, _: i32) {
                 match color {
                     "red" => {
                         max_red = max_red.max(count);
-                        if count > 12 { still_possible = false;  }
-                    },
+                        if count > 12 { still_possible = false; }
+                    }
                     "green" => {
                         max_green = max_green.max(count);
                         if count > 13 { still_possible = false; }
-                    },
+                    }
                     "blue" => {
                         max_blue = max_blue.max(count);
                         if count > 14 { still_possible = false; }
-                    },
+                    }
                     _ => {}
                 }
             }
@@ -53,7 +53,6 @@ pub fn solve(lines: Vec<String>, _: i32) {
             power *= max_green;
         }
         power_sum += power;
-
     }
 
     println!("Day 02: 1 = {:?}", sum);
