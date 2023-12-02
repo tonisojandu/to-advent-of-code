@@ -8,7 +8,7 @@ use clap::Parser;
 mod common;
 mod day00;
 mod day01;
-// mod day02;
+mod day02;
 // mod day03;
 // mod day04;
 // mod day05;
@@ -74,11 +74,17 @@ fn main() {
     };
 
     let buf_reader = io::BufReader::new(file);
-    let lines = buf_reader.lines().map(|s| s.unwrap()).collect();
+    let mut lines: Vec<String> = buf_reader.lines().map(|s| s.unwrap()).collect();
+
+    // remove last empty lines
+    while lines.len() > 0 && lines[lines.len() - 1].len() == 0 {
+        lines.pop();
+    }
 
     match day {
         0 => day00::solve(lines, part),
         1 => day01::solve(lines, part),
+        2 => day02::solve(lines, part),
         // 3 => day03::solve(lines, part),
         // 4 => day04::solve(lines, part),
         // 5 => day05::solve(lines, part),
