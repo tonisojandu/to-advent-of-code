@@ -11,7 +11,7 @@ pub fn solve(lines: Vec<String>, _: i32) {
     for i in 0..n {
         let line_parts = lines[i].split("|").collect::<Vec<&str>>();
 
-        let whitespace = Regex::new(r"\s+").unwrap(); // regex pattern to split on punctuation
+        let whitespace = Regex::new(r"\s+").unwrap();
         let winning_number_strings = whitespace.split(line_parts[0].trim()).map(|s| s.to_string()).collect::<HashSet<String>>();
         let number_strings = whitespace.split(line_parts[1].trim()).map(|s| s.to_string()).collect::<Vec<String>>();
 
