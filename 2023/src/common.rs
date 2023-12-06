@@ -34,6 +34,7 @@ struct Graph<T: HasId> {
     priority_generator: i64,
 }
 
+#[allow(dead_code)]
 impl<T: HasId> Graph<T> {
     fn new() -> Self {
         Graph {
