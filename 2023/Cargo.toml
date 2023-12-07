@@ -13,6 +13,7 @@ convenient-skiplist = "1.0.3"
 regex = "1.10.2"
 parallel-stream = "2.1.3"
 async-std = "1.12.0"
+num-bigint = "0.4.4"
 
 [[bin]]
 edition = "2021"
