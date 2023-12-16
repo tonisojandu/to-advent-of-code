@@ -68,7 +68,6 @@ fn visit(y: i64, x: i64, direction: char, context: &mut Context, path: &mut Link
 
     // is memoized
     if context.result_cache.contains_key(&(y, x, direction)) {
-        // println!("memoized for y={} x={} direction={}", y, x, direction);
         return context.result_cache[&(y, x, direction)];
     }
 
