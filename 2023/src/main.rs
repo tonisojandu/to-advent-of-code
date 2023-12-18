@@ -24,7 +24,7 @@ mod day14;
 mod day15;
 mod day16;
 // mod day17;
-// mod day18;
+mod day18;
 // mod day19;
 // mod day20;
 // mod day21;
@@ -99,7 +99,7 @@ fn main() {
         15 => day15::solve(lines, part),
         16 => day16::solve(lines, part),
         // 17 => day17::solve(lines, part),
-        // 18 => day18::solve(lines, part),
+        18 => day18::solve(lines, part),
         // 19 => day19::solve(lines, part),
         // 20 => day20::solve(lines, part),
         // 21 => day21::solve(lines, part),
@@ -111,11 +111,11 @@ fn main() {
     };
 }
 
-fn build_input_file_name(directory: &str, day: i32, is_example: bool, part: i32) -> String {
+fn build_input_file_name(directory: &str, day: i32, is_example: bool, _: i32) -> String {
     return format!(
-        "{}/day{:02}{}.in",
+        "{}/{:02}{}",
         directory,
         day,
-        if is_example { format!(".example-{}", part) } else { "".to_string() }
+        if is_example { ".example" } else { ".in" }
     );
 }
