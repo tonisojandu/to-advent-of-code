@@ -41,12 +41,12 @@ fn part1(lines: Vec<String>) {
             'L' => {
                 let next_node = left.get(current_node).unwrap();
                 current_path.push(next_node.to_string());
-            },
+            }
             'R' => {
                 println!("R: {}", current_node);
                 let next_node = right.get(current_node).unwrap();
                 current_path.push(next_node.to_string());
-            },
+            }
             _ => panic!("Unknown instruction {}", current_instruction),
         }
     }
@@ -92,8 +92,7 @@ fn part2(lines: Vec<String>) {
         for i in 0..width {
             if saw_end_at[i] > 0 {
                 ends_seen += 1;
-            }
-            else if current_positions[i].ends_with('Z') {
+            } else if current_positions[i].ends_with('Z') {
                 saw_end_at[i] = depth;
                 ends_seen += 1;
             }
@@ -109,11 +108,11 @@ fn part2(lines: Vec<String>) {
                 'L' => {
                     let next_node = left.get(current_positions[i].as_str()).unwrap();
                     current_positions[i] = next_node.to_string();
-                },
+                }
                 'R' => {
                     let next_node = right.get(current_positions[i].as_str()).unwrap();
                     current_positions[i] = next_node.to_string();
-                },
+                }
                 _ => panic!("Unknown instruction {}", current_instruction),
             }
         }

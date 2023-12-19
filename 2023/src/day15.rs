@@ -22,7 +22,7 @@ impl LensBox {
         match self.stack.iter_mut().find(|lens| lens.label == offered.label) {
             Some(found) => {
                 found.focal_length = offered.focal_length;
-            },
+            }
             None => {
                 self.stack.push_back(offered);
             }
@@ -33,7 +33,7 @@ impl LensBox {
         match self.stack.iter().position(|lens| lens.label == label) {
             Some(found) => {
                 self.stack.remove(found);
-            },
+            }
             None => {}
         }
     }

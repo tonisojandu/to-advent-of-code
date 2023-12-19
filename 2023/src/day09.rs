@@ -1,7 +1,7 @@
 pub fn solve(lines: Vec<String>, _: i32) {
     let mut total_past: i64 = 0;
     let mut total_future: i64 = 0;
-    lines.iter().for_each(|line|{
+    lines.iter().for_each(|line| {
         let numbers = line.split(" ").map(|s| s.parse::<i64>().unwrap()).collect::<Vec<i64>>();
         let nexts = find_next(&numbers);
         total_past += nexts.0;

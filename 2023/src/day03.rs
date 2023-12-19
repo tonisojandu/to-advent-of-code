@@ -14,7 +14,7 @@ pub fn solve(lines: Vec<String>, _: i32) {
     let mut sum = 0;
 
     let mut number_buffer = vec![];
-    let mut encountered_symbol  = false;
+    let mut encountered_symbol = false;
     let mut encountered_gears: HashSet<(usize, usize)> = HashSet::new();
     for y in 0..height {
         for x in 0..width {
@@ -36,7 +36,6 @@ pub fn solve(lines: Vec<String>, _: i32) {
                         };
                         ratio.push(number);
                     }
-
                 }
                 number_buffer.clear();
                 encountered_symbol = false;
@@ -78,8 +77,8 @@ pub fn solve(lines: Vec<String>, _: i32) {
 
 fn adjacent_coords(x: usize, y: usize, width: usize, height: usize) -> Vec<(usize, usize)> {
     let mut result: Vec<(usize, usize)> = vec![];
-    for c_x in max(0, (x as i32)-1)..min(width as i32, (x as i32)+2) {
-        for c_y in max(0, (y as i32)-1)..min(height as i32, (y as i32)+2) {
+    for c_x in max(0, (x as i32) - 1)..min(width as i32, (x as i32) + 2) {
+        for c_y in max(0, (y as i32) - 1)..min(height as i32, (y as i32) + 2) {
             if !(c_x == (x as i32) && c_y == (y as i32)) {
                 result.push((c_x as usize, c_y as usize));
             }

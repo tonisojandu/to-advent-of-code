@@ -35,7 +35,7 @@ impl MapperSet {
         for line in lines.iter().skip(1) {
             mappers.push(Mapper::from(line));
         }
-        MapperSet { mappers, }
+        MapperSet { mappers }
     }
 
     fn reverse_apply(&self, value: u64) -> u64 {
@@ -81,8 +81,8 @@ pub fn solve(lines: Vec<String>, _: i32) {
                 Some(_) => {
                     println!("Found more_seed at {}", location_iter);
                     more_min_location = location_iter;
-                },
-                None => {},
+                }
+                None => {}
             }
         }
         if min_location != u64::MAX && more_min_location != u64::MAX {

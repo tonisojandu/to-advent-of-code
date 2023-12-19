@@ -46,7 +46,7 @@ pub fn solve(lines: Vec<String>, _: i32) {
     let mut sum = 0;
     let mut big_sum = BigInt::from(0i64);
     for i in 0..galaxy_coords.len() {
-        for j in (i+1)..galaxy_coords.len() {
+        for j in (i + 1)..galaxy_coords.len() {
             let mut num_empty_spaces_between = 0;
             for k in 0..empty_rows.len() {
                 let larger = galaxy_coords[i].0.max(galaxy_coords[j].0);

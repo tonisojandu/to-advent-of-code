@@ -5,17 +5,16 @@ fn options_for(
     arrangements_left: &mut VecDeque<i64>,
     previous_was: char,
     starting_from: usize,
-    cache: &mut HashMap<(char, usize, usize), i64>
+    cache: &mut HashMap<(char, usize, usize), i64>,
 ) -> i64 {
     return match cache.get(&(previous_was, arrangements_left.len(), starting_from)) {
         Some(found) => {
             *found
-        },
+        }
         None => {
             let result: i64 = if arrangements_left.len() > 0 && starting_from >= matcher.len() {
                 0
-            }
-            else if arrangements_left.len() == 0 {
+            } else if arrangements_left.len() == 0 {
                 if (starting_from..matcher.len())
                     .into_iter()
                     .any(|i| matcher[i] == '#') {
@@ -49,8 +48,8 @@ fn options_for(
             };
             cache.insert((previous_was, arrangements_left.len(), starting_from), result);
             result
-        },
-    }
+        }
+    };
 }
 
 pub fn solve(lines: Vec<String>, part: i32) {

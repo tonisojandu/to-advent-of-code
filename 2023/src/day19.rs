@@ -22,7 +22,7 @@ impl Condition {
             key,
             operator,
             value,
-            destination
+            destination,
         }
     }
 }
@@ -30,7 +30,7 @@ impl Condition {
 struct Rule {
     name: String,
     conditions: Vec<Condition>,
-    fallback: String
+    fallback: String,
 }
 
 impl Rule {
@@ -47,7 +47,7 @@ impl Rule {
         Rule {
             name,
             conditions,
-            fallback
+            fallback,
         }
     }
 }
@@ -60,6 +60,7 @@ pub fn solve(lines: Vec<String>, part: i32) {
         _ => {}
     }
 }
+
 pub fn solve1(lines: Vec<String>) {
     let mut lines_split = lines.split(|line| line.len() == 0);
 
@@ -107,13 +108,13 @@ pub fn solve1(lines: Vec<String>) {
             match condition_result.as_deref() {
                 Some("R") => {
                     rule_result = Some(0);
-                },
+                }
                 Some("A") => {
                     rule_result = Some(x + m + a + s);
-                },
+                }
                 Some(new_rule) => {
                     current_rule = rules.get(new_rule).unwrap();
-                },
+                }
                 _ => panic!("Unknown condition result")
             }
         }
@@ -123,7 +124,6 @@ pub fn solve1(lines: Vec<String>) {
 
 
     println!("Day 19: 1 = {:?}", result);
-
 }
 
 
@@ -161,13 +161,13 @@ fn find_range(
         let pivot = condition.value;
         let range = changed_ranges.get(&condition.key).unwrap();
 
-        let (next_rule_range, next_condition_range ) = match condition.operator {
+        let (next_rule_range, next_condition_range) = match condition.operator {
             '<' => {
                 ((range.0, (pivot - 1).max(range.0)), (pivot.min(range.1), range.1))
-            },
+            }
             '>' => {
                 (((pivot + 1).min(range.1), range.1), (range.0, pivot.max(range.0)))
-            },
+            }
             _ => panic!("Unknown operator {}", condition.operator)
         };
         changed_ranges.insert(condition.key, next_rule_range);
@@ -184,7 +184,6 @@ fn find_range(
             }
         }
         changed_ranges.insert(condition.key, next_condition_range);
-
     }
     match (&rule.fallback.clone()).as_str() {
         "R" => {}

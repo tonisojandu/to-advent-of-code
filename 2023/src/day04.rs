@@ -22,7 +22,7 @@ pub fn solve(lines: Vec<String>, _: i32) {
             }
         }
 
-        for j in (i+1)..(i + wins as usize + 1).min(num_cards.len()) {
+        for j in (i + 1)..(i + wins as usize + 1).min(num_cards.len()) {
             num_cards[j] += num_cards[i]
         }
         if wins > 0 {

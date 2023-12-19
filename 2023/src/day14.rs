@@ -214,7 +214,7 @@ fn solve2(lines: Vec<String>) {
     while restart_from + interval < complete_end {
         restart_from += interval;
     }
-    for _ in (restart_from+1)..complete_end {
+    for _ in (restart_from + 1)..complete_end {
         platform.cycle();
     }
 

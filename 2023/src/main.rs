@@ -65,7 +65,7 @@ fn main() {
     let file = match File::open(file_name.clone()).or(File::open(&fallback_name)) {
         Ok(file) => {
             file
-        },
+        }
         Err(error) => {
             println!("Error opening both {} and {}: {}", file_name, fallback_name, error);
             return;

@@ -5,7 +5,6 @@ struct Note {
 }
 
 impl Note {
-
     fn new(pattern: Vec<Vec<char>>) -> Note {
         let width = pattern[0].len();
         let height = pattern.len();
