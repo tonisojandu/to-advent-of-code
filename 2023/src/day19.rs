@@ -81,7 +81,6 @@ pub fn solve1(lines: Vec<String>) {
         let mut current_rule = rules.get("in").unwrap();
         let mut rule_result: Option<i64> = None;
         while rule_result.is_none() {
-            // println!("{} {} {} {} {}", x, m, a, s, current_rule.name);
             let mut condition_result: Option<String> = None;
             'checking_conditions: for i in 0..current_rule.conditions.len() {
                 let condition = &current_rule.conditions[i];
