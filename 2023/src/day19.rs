@@ -94,7 +94,6 @@ pub fn solve1(lines: Vec<String>) {
                 let compare_result = match condition.operator {
                     '<' => comparing < condition.value,
                     '>' => comparing > condition.value,
-                    // '=' => comparing == condition.value,
                     _ => panic!("Unknown operator {}", condition.operator)
                 };
                 if compare_result {
