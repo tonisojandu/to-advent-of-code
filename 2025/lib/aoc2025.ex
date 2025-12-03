@@ -1,8 +1,8 @@
 defmodule Aoc2025 do
-  def pull_content(day) do
+  def pull_content(day, input) do
     data_dir = Path.expand("~/.aoc")
     session_file = Path.join(data_dir, "session")
-    input_file = Path.join([data_dir, "inputs", "2025", "#{day}-1.in"])
+    input_file = Path.join([data_dir, "inputs", "2025", "#{day}-#{input}.in"])
 
     File.mkdir_p!(Path.dirname(input_file))
     File.touch!(session_file)
@@ -11,7 +11,7 @@ defmodule Aoc2025 do
          {:ok, token} <- File.read(session_file),
          token = String.trim(token),
          :ok <- if(token == "", do: {:error, :empty_token}, else: :ok),
-         {:ok, body} <- fetch_input(day, token) do
+         {:ok, body} <- fetch_input(day, input, token) do
       File.write!(input_file, body)
       {:ok, body}
     else
@@ -21,7 +21,7 @@ defmodule Aoc2025 do
     end
   end
 
-  defp fetch_input(day, token) do
+  defp fetch_input(day, input, token) do
     headers = [
       {~c"Cookie", String.to_charlist(token)},
       {~c"User-Agent", ~c"my-elixir-aoc-solution-should-pulls-once"}
@@ -29,16 +29,17 @@ defmodule Aoc2025 do
     url = ~c"https://adventofcode.com/2025/day/#{day}/input"
     http_options = [timeout: 5000, ssl: [verify: :verify_none]]
 
-    with {:ok, {{_, 200, _}, _, body}} <- :httpc.request(:get, {url, headers}, http_options, []) do
-      {:ok, to_string(body)}
+    with {:ok} <- (if input == 1, do: {:ok}, else: {:error, "Cannot pull input #{input} != 1 . Insert it manually"}),
+         {:ok, {{_, 200, _}, _, body}} <- :httpc.request(:get, {url, headers}, http_options, []) do
+         {:ok, to_string(body)}
     else
       {:ok, {{_, status, _}, _, _}} -> {:error, "Got #{status} from server"}
       {:error, reason} -> {:error, reason}
     end
   end
 
-  def pull_lines(day) do
-    with {:ok, content} <- pull_content(day) do
+  def pull_lines(day, input) do
+    with {:ok, content} <- pull_content(day, input) do
       lines =
         content
         |> String.split("\n", trim: true)
@@ -48,10 +49,10 @@ defmodule Aoc2025 do
     end
   end
 
-  def solve(day) do
+  def solve(day, input) do
     module = Module.concat(Aoc2025, "Day#{String.pad_leading(to_string(day), 2, "0")}")
 
-    with {:ok, lines} <- pull_lines(day),
+    with {:ok, lines} <- pull_lines(day, input),
          {:module, _} <- Code.ensure_loaded(module),
          true <- function_exported?(module, :solve, 1) do
       module.solve(lines)
