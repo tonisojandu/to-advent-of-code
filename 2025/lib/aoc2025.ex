@@ -7,21 +7,29 @@ defmodule Aoc2025 do
     File.mkdir_p!(Path.dirname(input_file))
     File.touch!(session_file)
 
-    with {:error, _} <- File.read(input_file),
-         {:ok, token} <- File.read(session_file),
-         token = String.trim(token),
-         :ok <- if(token == "", do: {:error, :empty_token}, else: :ok),
-         {:ok, body} <- fetch_input(day, input, token) do
-      File.write!(input_file, body)
-      {:ok, body}
-    else
-      {:ok, cached} -> {:ok, cached}
-      {:error, :empty_token} -> {:error, "Session token missing, please write it to #{session_file}"}
-      {:error, reason} -> {:error, reason}
+    case File.read(input_file) do
+      {:ok, cached} ->
+        {:ok, cached}
+
+      {:error, _} ->
+        with {:ok, token} <- File.read(session_file),
+             token = String.trim(token),
+             :ok <- if(token == "", do: {:error, :empty_token}, else: :ok),
+             {:ok, body} <- fetch_input(day, input, token) do
+          File.write!(input_file, body)
+          {:ok, body}
+        else
+          {:error, :empty_token} -> {:error, "Session token missing, please write it to #{session_file}"}
+          {:error, reason} -> {:error, reason}
+        end
     end
   end
 
   defp fetch_input(day, input, token) do
+    # Ensure HTTP client is started
+    :inets.start()
+    :ssl.start()
+
     headers = [
       {~c"Cookie", String.to_charlist(token)},
       {~c"User-Agent", ~c"my-elixir-aoc-solution-should-pulls-once"}
