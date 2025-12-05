@@ -46,15 +46,26 @@ defmodule Aoc2025 do
     end
   end
 
-  def pull_lines(day, input) do
+  defp pull_lines(day, input) do
     with {:ok, content} <- pull_content(day, input) do
       lines =
         content
-        |> String.split("\n", trim: true)
-        |> Enum.map(&String.trim/1)
-
+        |> String.split("\n")
+        |> drop_last_empty()
       {:ok, lines}
     end
+  end
+
+  defp drop_last_empty(lines) do
+    lines
+    |> Enum.reverse()
+    |> then(fn [h | t] -> 
+      case String.trim(h) do 
+        "" -> t
+        _ -> [h | t]
+      end 
+    end)
+    |> Enum.reverse()
   end
 
   def solve(day, input) do
