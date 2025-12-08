@@ -1,34 +1,90 @@
 defmodule Aoc2025.Day04 do
-  @directions for dy <- -1..1, dx <- -1..1, {dy, dx} != {0, 0}, do: {dy, dx}
 
   def solve(lines) do
-    room = parse(lines)
-    {solve1(room), solve2(room)}
+    { width, height, room } = parse(lines)
+    { solve1(width, height, room), solve2(width, height, room) }
   end
 
-  defp solve1(room), do: room |> removable_cells() |> MapSet.size()
+  defp solve1(width, height, room) do
+    1..width
+    |> Enum.map(fn y -> 
+      1..height
+      |> Enum.filter(fn x -> can_be_remove_neigbours(room, y, x) end)
+      |> Enum.count()
+    end) 
+    |> Enum.sum()
+  end
 
-  defp solve2(room) do
-    to_remove = removable_cells(room)
-    if MapSet.size(to_remove) == 0 do
-      0
+  defp solve2(width, height, room) do
+    {removed, new_room} = remove(width, height, room)
+    if removed > 0, do: removed + solve2(width, height, new_room), else: 0
+  end
+
+
+  defp remove(width, height, room) do
+    remove = 1..width
+      |> Enum.map(fn y -> 
+        1..height
+        |> Enum.filter(fn x -> can_be_remove_neigbours(room, y, x) end)
+        |> Enum.map(fn x -> {y, x} end)
+      end)
+      |> Enum.flat_map(&(&1))
+      |> then(fn x -> MapSet.new(x) end)
+
+    remove_count = MapSet.size(remove)
+
+    new_room = 0..(height + 1)
+      |> Enum.map(fn y -> 
+        line = elem(room, y)
+        0..(width + 1)
+        |> Enum.map(fn x -> 
+          value = elem(line, x)
+          if MapSet.member?(remove, {y, x}), do: ?., else: value
+        end) 
+        |> List.to_tuple()
+      end)
+      |> List.to_tuple()
+
+    {remove_count, new_room}
+  end
+
+  defp can_be_remove_neigbours(room, y, x) do
+    if elem(elem(room, y), x) == ?@ do
+
+      num = -1..1
+        |> Enum.map(fn dy -> 
+          -1..1
+          |> Enum.map(fn dx -> {dy, dx} end)
+        end)
+        |> Enum.flat_map(&(&1))
+        |> Enum.reject(&(&1 == {0, 0}))
+        |> Enum.map(fn {dy, dx} -> 
+          if elem(elem(room, y + dy), x + dx) == ?@, do: 1, else: 0
+        end)
+        |> Enum.sum()
+      num < 4
     else
-      MapSet.size(to_remove) + solve2(Map.drop(room, MapSet.to_list(to_remove)))
+      false
     end
   end
 
-  defp removable_cells(room) do
-    for {pos, ?@} <- room, count_neighbors(room, pos) < 4, into: MapSet.new(), do: pos
-  end
-
-  defp count_neighbors(room, {y, x}) do
-    Enum.count(@directions, fn {dy, dx} -> Map.get(room, {y + dy, x + dx}) == ?@ end)
-  end
-
   defp parse(lines) do
-    for {line, y} <- Enum.with_index(lines, 1),
-        {char, x} <- Enum.with_index(String.to_charlist(line), 1),
-        into: %{},
-        do: {{y, x}, char}
+    width = String.length(hd(lines))
+    height = length(lines)
+    extra_line = List.duplicate(?., width + 2) |> List.to_tuple()
+
+    room = lines
+      |> Enum.map(fn line ->
+        line
+        |> String.to_charlist()
+        |> then(fn x -> [?. | x] ++ [?.] end)
+        |> List.to_tuple()
+      end)
+      |> then(fn x -> [extra_line | x] ++ [extra_line] end)
+      |> List.to_tuple()
+
+    {width, height, room}
   end
+
 end
+

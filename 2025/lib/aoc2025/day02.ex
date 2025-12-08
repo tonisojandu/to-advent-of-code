@@ -1,61 +1,63 @@
 defmodule Aoc2025.Day02 do
   def solve(lines) do
-    ranges =
-      lines
-      |> hd()
-      |> String.split(",")
-      |> Enum.reject(&(String.trim(&1) == ""))
-      |> Enum.map(fn x ->
-        [a, b] = String.split(x, "-")
-        {String.to_integer(a), String.to_integer(b)}
-      end)
+    ranges = String.split(hd(lines), ",")
+    |> Enum.filter(fn x -> String.trim(x) != "" end)
+    |> Enum.map(fn x -> String.split(x, "-") end)
+    |> Enum.map(fn [a, b] -> { String.to_integer(a), String.to_integer(b) } end)
 
-    max_num =
-      ranges
-      |> Enum.flat_map(&Tuple.to_list/1)
-      |> Enum.max()
+    max_num = Enum.flat_map(ranges, (fn {a, b} -> [a, b] end))
+    |> Enum.max()
 
-    first = doubles(ranges, max_num)
-    second = add_multiples(ranges, max_num)
-    {sum_unique(first), sum_unique(second)}
+    first = doubles(ranges, 1, 10, max_num)
+    second = add_multiples(ranges, 1, 10, max_num)
+    { sum_unique(first), sum_unique(second) }
   end
 
-  defp sum_unique(values) do
-    values |> Enum.uniq() |> Enum.sum()
+  def unique_sorted(values) do
+    values
+    |> Enum.uniq()
+    |> Enum.sort()
   end
 
-  defp doubles(ranges, max_num) do
-    Stream.iterate(1, &(&1 + 1))
-    |> Stream.map(&make_double/1)
-    |> Stream.take_while(&(&1 <= max_num))
-    |> Enum.filter(&in_ranges?(ranges, &1))
+  def sum_unique(values) do
+    Enum.sum(unique_sorted(values))
   end
 
-  defp make_double(n) do
-    digits = Integer.digits(n)
-    Integer.undigits(digits ++ digits)
+  def doubles(ranges, n, shifter, max_num) do
+    new_shifter = if n >= shifter do shifter * 10 else shifter end
+    check_num = n * new_shifter + n
+    if check_num <= max_num do 
+      tail = doubles(ranges, n + 1, new_shifter, max_num)
+      if check_ranges(ranges, check_num), do: [check_num | tail], else: tail
+    else
+      []
+    end
   end
 
-  defp add_multiples(ranges, max_num) do
-    Stream.iterate(1, &(&1 + 1))
-    |> Stream.map(&{&1, shifter_for(&1)})
-    |> Stream.take_while(fn {n, shifter} -> n * shifter + n <= max_num end)
-    |> Stream.flat_map(fn {n, shifter} -> rep_pattern(n, shifter, max_num) end)
-    |> Enum.filter(&in_ranges?(ranges, &1))
+
+  def add_multiples(range, n, shifter, max_num) do
+    new_shifter = if n >= shifter do shifter * 10 else shifter end
+    if n * new_shifter + n <= max_num do
+      Enum.concat(recurse_fixed(range, n, new_shifter, max_num, n), add_multiples(range, n + 1, new_shifter, max_num))
+    else
+      []
+    end
   end
 
-  defp shifter_for(n) do
-    digits = Integer.digits(n) |> length()
-    Integer.pow(10, digits)
+  def recurse_fixed(ranges, n, shifter, max_num, last_checked) do
+    check_num = last_checked * shifter + n
+    if check_num <= max_num do
+      tail = recurse_fixed(ranges, n, shifter, max_num, check_num)
+      if check_ranges(ranges, check_num), do:  [check_num | tail], else: tail
+    else
+      []
+    end 
   end
 
-  defp rep_pattern(n, shifter, max_num) do
-    Stream.iterate(n * shifter + n, &(&1 * shifter + n))
-    |> Stream.take_while(&(&1 <= max_num))
-    |> Enum.to_list()
-  end
+  def check_ranges([], _), do: false 
+  def check_ranges([h | t], x), do: between(x, h) or check_ranges(t, x) 
 
-  defp in_ranges?(ranges, x) do
-    Enum.any?(ranges, fn {a, b} -> a <= x and x <= b end)
+  def between(x, {a, b}) do
+    a <= x and x <= b
   end
 end
